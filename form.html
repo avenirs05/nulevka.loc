@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<meta name="format-detection" content="telephone=no" />
+	
+	<title>Form</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        $(function () {
+            
+                var showAndHide = function showAndHide () {
+                    var allInputs = $('#form-tax-system >label > input');
+                    for (var i = 0; i < allInputs.length; i++) {
+                        if (allInputs.eq(i).prop('checked')) {
+                            $('.tax-answer-' + i).show();
+                        } else $('.tax-answer-' + i).hide();                
+                    }
+                }
+            
+                $("#general").change(showAndHide);
+                $("#simple").change(showAndHide);
+                $("#another").change(showAndHide);
+                $("#not-know").change(showAndHide);
+                   
+        });
+            
+    </script>
+    
+    <style>
+        body {
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="form-tax-system" action="">
+    Выберите систему налогообложения:<br><br>
+
+    <label for="general"><input id="general" type="radio" name="tax-system"> Общая</label><br>
+    <div style="display: none" class="tax-answer-0">Hideen Text General</div>
+
+
+    <label for="simple"><input id="simple" type="radio" name="tax-system"> Упрощенная</label><br>
+    <p style="display: none" class="tax-answer-1">Hidden Text Simple</p>
+
+    <label for="another"><input id="another" type="radio" name="tax-system"> Другая<br></label><br>
+    <p style="display: none" class="tax-answer-2">Hidden Text Another</p>
+
+    <label for="not-know"><input id="not-know" type="radio" name="tax-system"> Я не знаю</label><br>
+    <p style="display: none" class="tax-answer-3">Hidden Text Not-Know</p>
+</form>
+
+
+</body>
+</html>
