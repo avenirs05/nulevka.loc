@@ -46,8 +46,19 @@
                 $("#simple").change(showAndHide);
                 $("#another").change(showAndHide);
                 $("#not-know").change(showAndHide);
-
                 $("#uk-4-2016, #uk-4-2015, #uk-4-2014").change(showAndHideUK);
+                
+                $("#one-face-yes").change(function() {
+                    if (($('#one-face-yes')).prop('checked')) {
+                         $('#work-agree').show();
+                    } 
+                });
+
+                $("#one-face-no").change(function() {
+                    if (($('#one-face-no')).prop('checked')) {
+                         $('#work-agree').hide();
+                    } 
+                });
                 
                    
         });
@@ -64,17 +75,17 @@
 <body>
 
 <form id="form-tax-system" action="">
-    Выберите систему налогообложения:<br><br>
+    <strong><span>Выберите систему налогообложения:</span></strong><br>
 
     <label for="general"><input id="general" type="radio" name="tax-system"> Общая</label><br>
-    <div style="display: none" class="tax-answer-0">Выберите период<br><br>
+    <div style="display: none" class="tax-answer-0"><i>Выберите период<br></i>
         <label for="uk-2-2017"><input id="uk-2-2017" type="checkbox" checked> 2-й квартал 2017 года</label><br>
         <label for="uk-1-2017"><input id="uk-1-2017" type="checkbox"> 1-й квартал 2017 года</label><br><br>
         <label for="uk-4-2016"><input id="uk-4-2016" type="checkbox"> 4-й квартал 2016 года</label><br>
        
-        <div style="display: none" id="uk-question-0">Как внесен УК?<br><br>
+        <div style="display: none" id="uk-question-0"><strong>Как внесен УК?</strong><br>
             <label for="money-0"><input id="money-0" type="radio" name="uk-0"> Деньгами</label><br>
-            <label for="things-0"><input id="things-0" type="radio" name="uk-0"> Имуществом</label><br>
+            <label for="things-0"><input id="things-0" type="radio" name="uk-0"> Имуществом</label><br><br>
         </div>
 
         <label for="uk-3-2016"><input id="uk-3-2016" type="checkbox"> 3-й квартал 2016 года</label><br>
@@ -82,9 +93,9 @@
         <label for="uk-1-2016"><input id="uk-1-2016" type="checkbox"> 1-й квартал 2016 года</label><br><br>
         <label for="uk-4-2015"><input id="uk-4-2015" type="checkbox"> 4-й квартал 2015 года</label><br>
        
-        <div style="display: none" id="uk-question-1">Как внесен УК?<br><br>
+        <div style="display: none" id="uk-question-1"><strong>Как внесен УК?</strong><br>
             <label for="money-1"><input id="money-1" type="radio" name="uk-1"> Деньгами</label><br>
-            <label for="things-1"><input id="things-1"type="radio" name="uk-1"> Имуществом</label><br>
+            <label for="things-1"><input id="things-1"type="radio" name="uk-1"> Имуществом</label><br><br>
         </div>
 
         <label for="uk-3-2015"><input id="uk-3-2015" type="checkbox"> 3-й квартал 2015 года</label><br>
@@ -92,9 +103,9 @@
         <label for="uk-1-2015"><input id="uk-1-2015" type="checkbox"> 1-й квартал 2015 года</label><br><br>
         <label for="uk-4-2014"><input id="uk-4-2014" type="checkbox"> 4-й квартал 2014 года</label><br>
         
-        <div style="display: none" id="uk-question-2">Как внесен УК?<br><br>
+        <div style="display: none" id="uk-question-2"><strong>Как внесен УК?</strong><br>
             <label for="money-2"><input id="money-2" type="radio" name="uk-2"> Деньгами</label><br>
-            <label for="things-2"><input id="things-2" type="radio" name="uk-2"> Имуществом</label><br>
+            <label for="things-2"><input id="things-2" type="radio" name="uk-2"> Имуществом</label><br><br>
         </div>
 
         <label for="uk-3-2014"><input id="uk-3-2014" type="checkbox"> 3-й квартал 2014 года</label><br>
@@ -103,13 +114,28 @@
     
 
     <label for="simple"><input id="simple" type="radio" name="tax-system"> Упрощенная</label><br>
-    <p style="display: none" class="tax-answer-1">Hidden Text Simple</p>
+    <p style="display: none" class="tax-answer-1">Контент если выбрано Упрощенная</p>
 
     <label for="another"><input id="another" type="radio" name="tax-system"> Другая<br></label><br>
-    <p style="display: none" class="tax-answer-2">Hidden Text Another</p>
+    <p style="display: none" class="tax-answer-2">Контент если выбрано Другая</p>
 
     <label for="not-know"><input id="not-know" type="radio" name="tax-system"> Я не знаю</label><br>
-    <p style="display: none" class="tax-answer-3">Hidden Text Not-Know</p>
+    <p style="display: none" class="tax-answer-3">Контент если выбрано Я не знаю какая система налоговая</p><br>
+
+    <div id="one-face">
+        <strong><span>У Вас единственный учредитель и он же директор (генеральный директор)?</span></strong><br>        
+        <label for="one-face-yes"><input id="one-face-yes" type="radio" name="one-face"> Да</label><br>
+        <label for="one-face-no"><input id="one-face-no" type="radio" name="one-face"> Нет</label><br><br>
+    </div>
+
+    <div style="display: none" id="work-agree">
+        <strong><span>Заключен ли с директором трудовой договор?</span></strong><br>        
+        <label for="work-agree-yes"><input id="work-agree-yes" type="radio" name="work-agree"> Да</label><br>
+        <label for="work-agree-no"><input id="work-agree-no" type="radio" name="work-agree"> Нет</label><br>
+        <label for="work-agree-dntknow"><input id="work-agree-dntknow" type="radio" name="work-agree"> Не знаю</label><br>
+    </div>
+
+
 </form>
 
 
