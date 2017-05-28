@@ -75,7 +75,7 @@ $(function () {
                 $(idOfReport)
                     .parent()
                     .parent()
-                    .append("<div><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
+                    .append("<div class='periods-will-send'><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
             }
         }
     }
@@ -205,6 +205,7 @@ $(function () {
     
     $("#btn-back-will-send").click(function() {      
         $('#div-will-send').hide();
+        $(".periods-will-send").remove();
         $('#div-one-face').show();        
     });
 
