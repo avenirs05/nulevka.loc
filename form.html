@@ -21,13 +21,15 @@
     <script src="js/bootstrap.min.js"></script>
 
 <script>
+
 $(function () {
-            
+
     var showAndHideTaxSystem = function () {
-        var allInputs = $('.tax-system > input');
+        var allInputs = $('.tax-system-answer > input');
         for (var i = 0; i < allInputs.length; i++) {
             if (allInputs.eq(i).prop('checked')) {
                 $('.tax-answer-' + i).show();
+                $('#btn-next-tax-system').show();
             } else $('.tax-answer-' + i).hide();                
         }
     }
@@ -56,44 +58,106 @@ $(function () {
         } );
     } 
 
+    function hideAllInputsWillSend () {
+        $('#decl-nds').parent().parent().hide();
+        $('#decl-profit').parent().parent().hide();
+        $('#count-ins').parent().parent().hide();        
+        $('#count-fss').parent().parent().hide();
+        $('#decl-one').parent().parent().hide();
+        $('#szv-m').parent().parent().hide();        
+    }
+
     $("#general").change(showAndHideTaxSystem);
     $("#simple").change(showAndHideTaxSystem);
     $("#another").change(showAndHideTaxSystem);
     $("#not-know").change(showAndHideTaxSystem);
     $("#uk-4-2016, #uk-4-2015, #uk-4-2014").change(showAndHideUK);
     
-    // $("#one-face-yes").change(function() {
-    //     if (($('#one-face-yes')).prop('checked')) {
-    //          $('#work-agree').show();
-    //     } 
-    // });
+    $("#btn-next-tax-system").click(function() {
+        $('#div-tranz').show();
+        $('#div-tax-system').hide();
+    });
 
-    // $("#one-face-no").change(function() {
-    //     if (($('#one-face-no')).prop('checked')) {
-    //          $('#work-agree').hide();
-    //     } 
-    // });
+    $("#btn-back-tranz").click(function() {
+        $('#div-tranz').hide();
+        $('#div-tax-system').show();
+    });
+    
+    $("#tranz-yes").change(function() {
+         if (($('#tranz-yes')).prop('checked')) {
+              $('#btn-next-tranz').show();
+         } 
+    });
 
-    // $("#work-agree-dntknow").change(popUpCallback);
+    $("#tranz-no").change(function() {
+        if (($('#tranz-no')).prop('checked')) {
+            $('#btn-next-tranz').show();
+        } 
+    });
+
+    $("#btn-next-tranz").click(function() {
+        $('#div-one-face').show();
+        $('#div-tranz').hide();
+        
+    });
+    
+    $("#btn-back-one-face").click(function() {
+        $('#div-tranz').show();
+        $('#div-one-face').hide();
+        
+    });
 
     $("#one-face-yes").change(function() {
-        $('#one-face').append("<span id='will-send'>Мы за вас сдадим:</span><br>");
-        var inputsTaxSystem = $('.tax-system > input');
-        for (var i = 0; i < inputsTaxSystem.length; i++) {
-            if (inputsTaxSystem.eq(i).prop('checked')) {
-                var inputsQuarter = $('.tax-answer-0 > label > input');
-                for (var i = 0; i < inputsQuarter.length; i++) {
-                    if (inputsQuarter.eq(i).prop('checked')) {
-
-                        $('#one-face').append(inputsQuarter.eq(i).parent().text() + '<br>');
-                    }                 
-                }
-            }
-            if ((i === (inputsTaxSystem.length - 1)) && (inputsTaxSystem.eq(i).prop('checked') == false)) {
-                $('#will-send').hide();
-            }                 
-        }
+         if (($('#one-face-yes')).prop('checked')) {
+              $('#btn-next-one-face').show();
+         } 
     });
+
+    $("#one-face-no").change(function() {
+        if (($('#one-face-no')).prop('checked')) {
+            $('#btn-next-one-face').show();
+        } 
+    });
+
+    $("#btn-next-one-face").click(function() {
+        $('#div-one-face').hide();
+        $('#div-will-send').show();
+        if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') ) {
+            hideAllInputsWillSend ();
+            $('#decl-nds').parent().parent().show();
+            $('#decl-profit').parent().parent().show();
+            $('#count-ins').parent().parent().show();
+            $('#count-fss').parent().parent().show();
+        }
+        if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') == false ) {
+            hideAllInputsWillSend ();
+            $('#decl-nds').parent().parent().show();
+            $('#decl-profit').parent().parent().show();
+            $('#count-ins').parent().parent().show();
+            $('#count-fss').parent().parent().show();
+            $('#szv-m').parent().parent().show();
+        }
+        if ( $('#tranz-yes').prop('checked') == false && $('#one-face-yes').prop('checked') ) {
+            hideAllInputsWillSend ();      
+            $('#decl-one').parent().parent().show();
+            $('#count-ins').parent().parent().show();
+            $('#count-fss').parent().parent().show();
+        }
+        if ( $('#tranz-yes').prop('checked') == false && $('#one-face-yes').prop('checked') == false ) {
+            hideAllInputsWillSend ();
+            $('#decl-one').parent().parent().show();
+            $('#count-ins').parent().parent().show();
+            $('#count-fss').parent().parent().show();
+            $('#szv-m').parent().parent().show();
+        }   
+    });
+    
+    $("#btn-back-will-send").click(function() {      
+        $('#div-will-send').hide();
+        $('#div-one-face').show();        
+    });
+
+
                    
 });
 </script>
@@ -108,65 +172,83 @@ $(function () {
 <body>
 
 <form id="form-tax-system" action="">
-    <strong><span>Выберите систему налогообложения:</span></strong><br>
-
-    <label class="tax-system" for="general"><input id="general" type="radio" name="tax-system">Общая</label><br>
-    <div style="display: none" class="tax-answer-0"><i>Выберите период<br></i>
-        <label for="uk-2-2017"><input id="uk-2-2017" type="checkbox" checked>2-й квартал 2017 года</label><br>
-        <label for="uk-1-2017"><input id="uk-1-2017" type="checkbox">1-й квартал 2017 года</label><br><br>
-        <label for="uk-4-2016"><input id="uk-4-2016" type="checkbox">4-й квартал 2016 года</label><br>
-       
-        <div style="display: none" id="uk-question-0"><strong>Как внесен УК?</strong><br>
-            <label for="money-0"><input id="money-0" type="radio" name="uk-0">Деньгами</label><br>
-            <label for="things-0"><input id="things-0" type="radio" name="uk-0">Имуществом</label><br><br>
-        </div>
-
-        <label for="uk-3-2016"><input id="uk-3-2016" type="checkbox">3-й квартал 2016 года</label><br>
-        <label for="uk-2-2016"><input id="uk-2-2016" type="checkbox">2-й квартал 2016 года</label><br>
-        <label for="uk-1-2016"><input id="uk-1-2016" type="checkbox">1-й квартал 2016 года</label><br><br>
-        <label for="uk-4-2015"><input id="uk-4-2015" type="checkbox">4-й квартал 2015 года</label><br>
-       
-        <div style="display: none" id="uk-question-1"><strong>Как внесен УК?</strong><br>
-            <label for="money-1"><input id="money-1" type="radio" name="uk-1">Деньгами</label><br>
-            <label for="things-1"><input id="things-1"type="radio" name="uk-1">Имуществом</label><br><br>
-        </div>
-
-        <label for="uk-3-2015"><input id="uk-3-2015" type="checkbox">3-й квартал 2015 года</label><br>
-        <label for="uk-2-2015"><input id="uk-2-2015" type="checkbox">2-й квартал 2015 года</label><br>
-        <label for="uk-1-2015"><input id="uk-1-2015" type="checkbox">1-й квартал 2015 года</label><br><br>
-        <label for="uk-4-2014"><input id="uk-4-2014" type="checkbox">4-й квартал 2014 года</label><br>
-        
-        <div style="display: none" id="uk-question-2"><strong>Как внесен УК?</strong><br>
-            <label for="money-2"><input id="money-2" type="radio" name="uk-2">Деньгами</label><br>
-            <label for="things-2"><input id="things-2" type="radio" name="uk-2">Имуществом</label><br><br>
-        </div>
-
-        <label for="uk-3-2014"><input id="uk-3-2014" type="checkbox">3-й квартал 2014 года</label><br>
-        <label for="uk-2-2014"><input id="uk-2-2014" type="checkbox">2-й квартал 2014 года</label><br><br>
+    <div id="div-tax-system">
+        <span>Выберите систему налогообложения:</span><br>        
+        <label class="tax-system-answer" for="general"><input id="general" type="radio" name="tax-system">Общая</label><br>
+        <div style="display: none" class="tax-answer-0"><i>Выберите период<br></i>
+            <label for="uk-2-2017"><input id="uk-2-2017" type="checkbox" checked>2-й квартал 2017 года</label><br>
+            <label for="uk-1-2017"><input id="uk-1-2017" type="checkbox">1-й квартал 2017 года</label><br><br>
+            <label for="uk-4-2016"><input id="uk-4-2016" type="checkbox">4-й квартал 2016 года</label><br>           
+            <div style="display: none" id="uk-question-0"><strong>Как внесен УК?</strong><br>
+                <label for="money-0"><input id="money-0" type="radio" name="uk-4-2016">Деньгами</label><br>
+                <label for="things-0"><input id="things-0" type="radio" name="uk-4-2016">Имуществом</label><br><br>
+            </div>        
+            <label for="uk-3-2016"><input id="uk-3-2016" type="checkbox">3-й квартал 2016 года</label><br>
+            <label for="uk-2-2016"><input id="uk-2-2016" type="checkbox">2-й квартал 2016 года</label><br>
+            <label for="uk-1-2016"><input id="uk-1-2016" type="checkbox">1-й квартал 2016 года</label><br><br>
+            <label for="uk-4-2015"><input id="uk-4-2015" type="checkbox">4-й квартал 2015 года</label><br>           
+            <div style="display: none" id="uk-question-1"><strong>Как внесен УК?</strong><br>
+                <label for="money-1"><input id="money-1" type="radio" name="uk-4-2015">Деньгами</label><br>
+                <label for="things-1"><input id="things-1"type="radio" name="uk-4-2015">Имуществом</label><br><br>
+            </div>        
+            <label for="uk-3-2015"><input id="uk-3-2015" type="checkbox">3-й квартал 2015 года</label><br>
+            <label for="uk-2-2015"><input id="uk-2-2015" type="checkbox">2-й квартал 2015 года</label><br>
+            <label for="uk-1-2015"><input id="uk-1-2015" type="checkbox">1-й квартал 2015 года</label><br><br>
+            <label for="uk-4-2014"><input id="uk-4-2014" type="checkbox">4-й квартал 2014 года</label><br>            
+            <div style="display: none" id="uk-question-2"><strong>Как внесен УК?</strong><br>
+                <label for="money-2"><input id="money-2" type="radio" name="uk-4-2014">Деньгами</label><br>
+                <label for="things-2"><input id="things-2" type="radio" name="uk-4-2014">Имуществом</label><br><br>
+            </div>        
+            <label for="uk-3-2014"><input id="uk-3-2014" type="checkbox">3-й квартал 2014 года</label><br>
+            <label for="uk-2-2014"><input id="uk-2-2014" type="checkbox">2-й квартал 2014 года</label><br><br>
+        </div>   
+        <label class="tax-system-answer" for="simple"><input id="simple" type="radio" name="tax-system">Упрощенная</label><br>
+        <p style="display: none" class="tax-answer-1">Контент если выбрано Упрощенная</p>        
+        <label class="tax-system-answer" for="another"><input id="another" type="radio" name="tax-system">Другая<br></label><br>
+        <p style="display: none" class="tax-answer-2">Контент если выбрано Другая</p>        
+        <label class="tax-system-answer" for="not-know"><input id="not-know" type="radio" name="tax-system">Я не знаю</label><br>
+        <p style="display: none" class="tax-answer-3">Контент если выбрано Я не знаю какая система налоговая</p><br>        
+        <button id="btn-next-tax-system" style="display: none;">Дальше</button>
     </div>
-    
+    <div id="div-tranz" style="display: none">
+        <span>Были ли движения по расчетному счету?</span><br>
+        <label for="tranz-yes"><input id="tranz-yes" type="radio" name="tranz">Да</label><br>
+        <label for="tranz-no"><input id="tranz-no" type="radio" name="tranz">Нет</label><br><br>
+        <button id="btn-back-tranz">Назад</button> 
+        <button id="btn-next-tranz" style="display: none;">Дальше</button> 
+    </div>
 
-    <label class="tax-system" for="simple"><input id="simple" type="radio" name="tax-system">Упрощенная</label><br>
-    <p style="display: none" class="tax-answer-1">Контент если выбрано Упрощенная</p>
-
-    <label class="tax-system" for="another"><input id="another" type="radio" name="tax-system">Другая<br></label><br>
-    <p style="display: none" class="tax-answer-2">Контент если выбрано Другая</p>
-
-    <label class="tax-system" for="not-know"><input id="not-know" type="radio" name="tax-system">Я не знаю</label><br>
-    <p style="display: none" class="tax-answer-3">Контент если выбрано Я не знаю какая система налоговая</p><br>
-
-    <div id="one-face">
-        <strong><span>У Вас единственный учредитель и он же директор (генеральный директор)?</span></strong><br>        
+    <div id="div-one-face" style="display: none">
+        <span>У Вас единственный учредитель и он же директор (генеральный директор)?</span><br>        
         <label for="one-face-yes"><input id="one-face-yes" type="radio" name="one-face">Да</label><br>
         <label for="one-face-no"><input id="one-face-no" type="radio" name="one-face">Нет</label><br><br>
+        <button id="btn-back-one-face">Назад</button>
+        <button id="btn-next-one-face" style="display: none;">Дальше</button>  
     </div>
 
-<!--     <div style="display: none" id="work-agree">
-        <strong><span>Заключен ли с директором трудовой договор?</span></strong><br>        
-        <label for="work-agree-yes"><input id="work-agree-yes" type="radio" name="work-agree">Да</label><br>
-        <label for="work-agree-no"><input id="work-agree-no" type="radio" name="work-agree">Нет</label><br>
-        <label for="work-agree-dntknow"><input id="work-agree-dntknow" type="radio" name="work-agree">Не знаю</label><br>
-    </div> -->
+    <div id="div-will-send" style="display: none">
+        <span>Мы за Вас подготовим:</span><br>
+        <div style="display: none;">
+            <label for='decl-nds'><input id='decl-nds' type='checkbox' name='decl-nds' checked>Налоговая декларация по НДС</label>
+        </div>
+        <div style="display: none;">
+            <label for='decl-profit'><input id='decl-profit' type='checkbox' name='decl-profit' checked>Налоговая декларация по налогу на прибыль</label>
+        </div>
+        <div style="display: none;">
+            <label for='count-ins'><input id='count-ins' type='checkbox' name='count-ins' checked>Расчет по страховым взносам</label>
+        </div>
+        <div style="display: none;">
+            <label for='count-fss'><input id='count-fss' type='checkbox' name='count-fss' checked>Расчетная ведомость в ФСС</label>
+        </div>
+        <div style="display: none;">
+            <label for='decl-one'><input id='decl-one' type='checkbox' name='decl-one' checked>Единая упрощенная декларация</label>
+        </div>
+        <div style="display: none;">
+            <label for='szv-m'><input id='szv-m' type='checkbox' name='szv-m' checked>СЗВ-М</label>
+        </div>
+        <button id="btn-back-will-send">Назад</button>
+    </div>
+
 
     <div id="dialog-callback" title="" style="display: none;">
         <form action="">
@@ -184,6 +266,7 @@ $(function () {
 
 
 </form>
+
 
 
 </body>
