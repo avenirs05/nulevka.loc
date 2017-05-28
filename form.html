@@ -67,6 +67,19 @@ $(function () {
         $('#szv-m').parent().parent().hide();        
     }
 
+    function showInputsWillSend (idOfReport) {
+        var periods = $('#choice-period > label');
+        var inputs = $('#choice-period > label > input');
+        for (var i = 0; i < periods.length; i++) {                    
+            if (inputs.eq(i).prop('checked')) {
+                $(idOfReport)
+                    .parent()
+                    .parent()
+                    .append("<div><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
+            }
+        }
+    }
+
     $("#general").change(showAndHideTaxSystem);
     $("#simple").change(showAndHideTaxSystem);
     $("#another").change(showAndHideTaxSystem);
@@ -119,36 +132,74 @@ $(function () {
         } 
     });
 
+
+
     $("#btn-next-one-face").click(function() {
         $('#div-one-face').hide();
         $('#div-will-send').show();
+        
         if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') ) {
             hideAllInputsWillSend ();
+
             $('#decl-nds').parent().parent().show();
+            showInputsWillSend ('#decl-nds');
+
             $('#decl-profit').parent().parent().show();
+            showInputsWillSend ('#decl-profit');
+
             $('#count-ins').parent().parent().show();
+            showInputsWillSend ('#count-ins');
+
             $('#count-fss').parent().parent().show();
+            showInputsWillSend ('#count-fss');            
         }
+
         if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') == false ) {
             hideAllInputsWillSend ();
+
             $('#decl-nds').parent().parent().show();
+            showInputsWillSend ('#decl-nds');
+
             $('#decl-profit').parent().parent().show();
+            showInputsWillSend ('#decl-profit');
+
             $('#count-ins').parent().parent().show();
+            showInputsWillSend ('#count-ins');
+
             $('#count-fss').parent().parent().show();
+            showInputsWillSend ('#count-fss');
+
             $('#szv-m').parent().parent().show();
+            showInputsWillSend ('#szv-m');
         }
+
         if ( $('#tranz-yes').prop('checked') == false && $('#one-face-yes').prop('checked') ) {
-            hideAllInputsWillSend ();      
+            hideAllInputsWillSend ();  
+
             $('#decl-one').parent().parent().show();
+            showInputsWillSend ('#decl-one');
+
             $('#count-ins').parent().parent().show();
+            showInputsWillSend ('#count-ins');
+
             $('#count-fss').parent().parent().show();
+            showInputsWillSend ('#count-fss');
         }
+
         if ( $('#tranz-yes').prop('checked') == false && $('#one-face-yes').prop('checked') == false ) {
             hideAllInputsWillSend ();
+
             $('#decl-one').parent().parent().show();
+            showInputsWillSend ('#decl-one');
+
             $('#count-ins').parent().parent().show();
+            showInputsWillSend ('#count-ins');
+
             $('#count-fss').parent().parent().show();
+            showInputsWillSend ('#count-fss');
+
             $('#szv-m').parent().parent().show();
+            showInputsWillSend ('#szv-m');
         }   
     });
     
@@ -175,7 +226,7 @@ $(function () {
     <div id="div-tax-system">
         <span>Выберите систему налогообложения:</span><br>        
         <label class="tax-system-answer" for="general"><input id="general" type="radio" name="tax-system">Общая</label><br>
-        <div style="display: none" class="tax-answer-0"><i>Выберите период<br></i>
+        <div id="choice-period" style="display: none" class="tax-answer-0"><i><span>Выберите период</span><br></i>
             <label for="uk-2-2017"><input id="uk-2-2017" type="checkbox" checked>2-й квартал 2017 года</label><br>
             <label for="uk-1-2017"><input id="uk-1-2017" type="checkbox">1-й квартал 2017 года</label><br><br>
             <label for="uk-4-2016"><input id="uk-4-2016" type="checkbox">4-й квартал 2016 года</label><br>           
@@ -229,22 +280,22 @@ $(function () {
     <div id="div-will-send" style="display: none">
         <span>Мы за Вас подготовим:</span><br>
         <div style="display: none;">
-            <label for='decl-nds'><input id='decl-nds' type='checkbox' name='decl-nds' checked>Налоговая декларация по НДС</label>
+            <label for='decl-nds'><input id='decl-nds' type='checkbox' name='decl-nds' checked><strong>Налоговая декларация по НДС</strong></label>
         </div>
         <div style="display: none;">
-            <label for='decl-profit'><input id='decl-profit' type='checkbox' name='decl-profit' checked>Налоговая декларация по налогу на прибыль</label>
+            <label for='decl-profit'><input id='decl-profit' type='checkbox' name='decl-profit' checked><strong>Налоговая декларация по налогу на прибыль</strong></label>
         </div>
         <div style="display: none;">
-            <label for='count-ins'><input id='count-ins' type='checkbox' name='count-ins' checked>Расчет по страховым взносам</label>
+            <label for='count-ins'><input id='count-ins' type='checkbox' name='count-ins' checked><strong>Расчет по страховым взносам</strong></label>
         </div>
         <div style="display: none;">
-            <label for='count-fss'><input id='count-fss' type='checkbox' name='count-fss' checked>Расчетная ведомость в ФСС</label>
+            <label for='count-fss'><input id='count-fss' type='checkbox' name='count-fss' checked><strong>Расчетная ведомость в ФСС</strong></label>
         </div>
         <div style="display: none;">
-            <label for='decl-one'><input id='decl-one' type='checkbox' name='decl-one' checked>Единая упрощенная декларация</label>
+            <label for='decl-one'><input id='decl-one' type='checkbox' name='decl-one' checked><strong>Единая упрощенная декларация</strong></label>
         </div>
         <div style="display: none;">
-            <label for='szv-m'><input id='szv-m' type='checkbox' name='szv-m' checked>СЗВ-М</label>
+            <label for='szv-m'><input id='szv-m' type='checkbox' name='szv-m' checked><strong>СЗВ-М</strong></label>
         </div>
         <button id="btn-back-will-send">Назад</button>
     </div>
