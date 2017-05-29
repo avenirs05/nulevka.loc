@@ -136,66 +136,50 @@ $(function () {
         $('#div-one-face').hide();
         $('#div-will-send').show();
         
-        if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') ) {
+        if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') ) {            
             hideAllInputsWillSend();
-
             $('#decl-nds').parent().parent().show();
             showInputsWillSend('#decl-nds');
-
             $('#decl-profit').parent().parent().show();
             showInputsWillSend('#decl-profit');
-
             $('#count-ins').parent().parent().show();
             showInputsWillSend('#count-ins');
-
             $('#count-fss').parent().parent().show();
             showInputsWillSend('#count-fss');            
         }
 
         if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') == false ) {
             hideAllInputsWillSend();
-
             $('#decl-nds').parent().parent().show();
             showInputsWillSend('#decl-nds');
-
             $('#decl-profit').parent().parent().show();
             showInputsWillSend('#decl-profit');
-
             $('#count-ins').parent().parent().show();
             showInputsWillSend('#count-ins');
-
             $('#count-fss').parent().parent().show();
             showInputsWillSend('#count-fss');
-
             $('#szv-m').parent().parent().show();
             showInputsWillSend('#szv-m');
         }
 
         if ( $('#tranz-yes').prop('checked') == false && $('#one-face-yes').prop('checked') ) {
-            hideAllInputsWillSend();  
-
+            hideAllInputsWillSend();
             $('#decl-one').parent().parent().show();
             showInputsWillSend('#decl-one');
-
             $('#count-ins').parent().parent().show();
             showInputsWillSend('#count-ins');
-
             $('#count-fss').parent().parent().show();
             showInputsWillSend('#count-fss');
         }
 
         if ( $('#tranz-yes').prop('checked') == false && $('#one-face-yes').prop('checked') == false ) {
             hideAllInputsWillSend ();
-
             $('#decl-one').parent().parent().show();
             showInputsWillSend('#decl-one');
-
             $('#count-ins').parent().parent().show();
             showInputsWillSend('#count-ins');
-
             $('#count-fss').parent().parent().show();
             showInputsWillSend('#count-fss');
-
             $('#szv-m').parent().parent().show();
             showInputsWillSend('#szv-m');
         }   
@@ -221,6 +205,36 @@ $(function () {
         $('#uk-3-2014').parent().show();
         $('#uk-2-2014').parent().show();      
     });
+
+    function showAndHideChildChecks (reportId) {
+        if ( $(reportId).prop('checked') == false ) {
+            var quarter = $(reportId).parent().siblings();
+            for (var i = 0; i < quarter.length; i++) {
+                quarter.children('label').children('input').eq(i).prop("checked", false);
+            }
+        }
+        if ( $(reportId).prop('checked')) {
+            var quarter = $(reportId).parent().siblings();
+            for (var i = 0; i < quarter.length; i++) {
+                quarter.children('label').children('input').eq(i).prop("checked", true);
+            }
+        }
+    }
+
+    $("#decl-nds").change(function() { showAndHideChildChecks (this); });
+    $("#decl-profit").change(function() { showAndHideChildChecks (this); });
+    $("#count-ins").change(function() { showAndHideChildChecks (this); });
+    $("#count-fss").change(function() { showAndHideChildChecks (this); });
+    $("#decl-one").change(function() { showAndHideChildChecks (this); });
+    $("#szv-m").change(function() { showAndHideChildChecks (this); });
+
+    $("#btn-test").click(function() {      
+        for (var i = 0; i < $('.lbl').length; i++) {
+            alert ( $('.lbl').eq(i).children('input').data('item'));
+            alert ( $('.lbl').eq(i).children('input').data('list'));
+        }
+    });
+        
                    
 });
 </script>
@@ -233,6 +247,11 @@ $(function () {
     </style>
 </head>
 <body>
+
+<label class="lbl" for="inp-1"><input id="inp-1" type="checkbox" data-item="1" data-list="11" checked>1-й квартал 2017 года</label><br>
+<label class="lbl" for="inp-1"><input id="inp-2" type="checkbox" data-item="2" data-list="12" checked>2-й квартал 2017 года</label><br>
+<label class="lbl" for="inp-1"><input id="inp-3" type="checkbox" data-item="3" data-list="13" checked>3-й квартал 2017 года</label><br>
+<button id="btn-test">Тест</button><br><br><br>
 
 <form id="form-tax-system" action="">
     <div id="div-tax-system">
