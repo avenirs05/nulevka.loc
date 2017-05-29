@@ -24,6 +24,17 @@
 
 $(function () {
 
+
+    function popUpCallback() {
+        $("#dialog-callback").dialog( {
+            resizable: false,
+            draggable: false,
+            width: 266,
+            modal: true,
+            title: 'Мы Вас проконсультируем',
+        } );
+    } 
+
     var showAndHideTaxSystem = function () {
         var allInputs = $('.tax-system-answer > input');
         for (var i = 0; i < allInputs.length; i++) {
@@ -35,28 +46,18 @@ $(function () {
     }
 
     var showAndHideUK = function () {
-        if (($('#uk-4-2016')).prop('checked')) {
+        if (($('#qrt-4-2016')).prop('checked')) {
              $('#uk-question-0').show();
         } else $('#uk-question-0').hide();
         
-        if (($('#uk-4-2015')).prop('checked')) {
+        if (($('#qrt-4-2015')).prop('checked')) {
              $('#uk-question-1').show();
         } else $('#uk-question-1').hide();
         
-        if (($('#uk-4-2014')).prop('checked')) {
+        if (($('#qrt-4-2014')).prop('checked')) {
              $('#uk-question-2').show();
         } else $('#uk-question-2').hide();
     }
-
-    function popUpCallback() {
-        $("#dialog-callback").dialog( {
-            resizable: false,
-            draggable: false,
-            width: 266,
-            modal: true,
-            title: 'Мы Вас проконсультируем',
-        } );
-    } 
 
     function hideAllInputsWillSend () {
         $('#decl-nds').parent().parent().hide();
@@ -75,7 +76,22 @@ $(function () {
                 $(idOfReport)
                     .parent()
                     .parent()
-                    .append("<div class='periods-will-send'><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
+                    .append("<div class='periods-will-send'><label><input type='checkbox'" + " " + "id=cb-" + i + " " + "checked>" + periods.eq(i).text() + "</input></label></div>");
+            }
+        }
+    }
+
+    function showAndHideChildChecks (reportId) {
+        if ( $(reportId).prop('checked') == false ) {
+            var quarter = $(reportId).parent().siblings();
+            for (var i = 0; i < quarter.length; i++) {
+                quarter.children('label').children('input').eq(i).prop("checked", false);
+            }
+        }
+        if ( $(reportId).prop('checked')) {
+            var quarter = $(reportId).parent().siblings();
+            for (var i = 0; i < quarter.length; i++) {
+                quarter.children('label').children('input').eq(i).prop("checked", true);
             }
         }
     }
@@ -84,7 +100,7 @@ $(function () {
     $("#simple").change(showAndHideTaxSystem);
     $("#another").change(showAndHideTaxSystem);
     $("#not-know").change(showAndHideTaxSystem);
-    $("#uk-4-2016, #uk-4-2015, #uk-4-2014").change(showAndHideUK);
+    $("#qrt-4-2016, #qrt-4-2015, #qrt-4-2014").change(showAndHideUK);
     
     $("#btn-next-tax-system").click(function() {
         $('#div-tranz').show();
@@ -191,35 +207,20 @@ $(function () {
         $('#div-one-face').show();        
     });
 
-    $("#another-periods").click(function() {      
-        $('#uk-1-2017').parent().show();  
-        $('#uk-4-2016').parent().show();
-        $('#uk-3-2016').parent().show();
-        $('#uk-2-2016').parent().show();
-        $('#uk-1-2016').parent().show();
-        $('#uk-4-2015').parent().show();
-        $('#uk-3-2015').parent().show();
-        $('#uk-2-2015').parent().show();
-        $('#uk-1-2015').parent().show();
-        $('#uk-4-2014').parent().show();
-        $('#uk-3-2014').parent().show();
-        $('#uk-2-2014').parent().show();      
+    $("#another-periods").click(function() {
+        var anotherPeriodsColl = $('#another-periods').siblings('div').children('label').children('input:not(#qrt-2-2017)');     
+        for (var i = 0; i < $(anotherPeriodsColl).length; i++) {
+            var anotherPeriodsInput = anotherPeriodsColl.eq(i).parent();
+            if (anotherPeriodsInput.css('display') == "none") {
+               anotherPeriodsInput.show(); 
+            } 
+            else 
+                anotherPeriodsInput.hide();
+                $('#uk-question-1').hide();
+                $('#uk-question-2').hide();
+                $('#uk-question-3').hide();
+        }            
     });
-
-    function showAndHideChildChecks (reportId) {
-        if ( $(reportId).prop('checked') == false ) {
-            var quarter = $(reportId).parent().siblings();
-            for (var i = 0; i < quarter.length; i++) {
-                quarter.children('label').children('input').eq(i).prop("checked", false);
-            }
-        }
-        if ( $(reportId).prop('checked')) {
-            var quarter = $(reportId).parent().siblings();
-            for (var i = 0; i < quarter.length; i++) {
-                quarter.children('label').children('input').eq(i).prop("checked", true);
-            }
-        }
-    }
 
     $("#decl-nds").change(function() { showAndHideChildChecks (this); });
     $("#decl-profit").change(function() { showAndHideChildChecks (this); });
@@ -234,6 +235,11 @@ $(function () {
             alert ( $('.lbl').eq(i).children('input').data('list'));
         }
     });
+
+    $('#div-will-send').on("click", "#cb-0", function() {
+        alert('hello!ddd');
+    })
+
         
                    
 });
@@ -257,34 +263,34 @@ $(function () {
     <div id="div-tax-system">
         <span>Выберите систему налогообложения:</span><br>        
         <label class="tax-system-answer" for="general"><input id="general" type="radio" name="tax-system">Общая</label><br>
-        <div id="choice-period" style="display: none" class="tax-answer-0"><i><span>Выберите период</span><br></i>
+        <div id="choice-period" style="display: none" class="tax-answer-0"><i><span>Выберите период</span></i><br>
 
-            <div><label for="uk-2-2017"><input id="uk-2-2017" type="checkbox" checked>2-й квартал 2017 года</label></div>            
+            <div><label for="qrt-2-2017"><input id="qrt-2-2017" type="checkbox" checked>2-й квартал 2017 года</label></div>            
             <a id="another-periods" href="#">Другие периоды</a><br>
-            <div><label style="display: none;" for="uk-1-2017"><input id="uk-1-2017" type="checkbox">1-й квартал 2017 года</label></div>
-            <div><label style="display: none;" for="uk-4-2016"><input id="uk-4-2016" type="checkbox">4-й квартал 2016 года</label></div>
+            <div><label style="display: none;" for="qrt-1-2017"><input id="qrt-1-2017" type="checkbox">1-й квартал 2017 года</label></div>
+            <div><label style="display: none;" for="qrt-4-2016"><input id="qrt-4-2016" type="checkbox">4-й квартал 2016 года</label></div>
             <p style="display: none" id="uk-question-0"><strong>Как внесен УК?</strong><br>
                 <label for="money-0"><input id="money-0" type="radio" name="uk-4-2016">Деньгами</label><br>
                 <label for="things-0"><input id="things-0" type="radio" name="uk-4-2016">Имуществом</label><br>
             </p>        
-            <div><label style="display: none;" for="uk-3-2016"><input id="uk-3-2016" type="checkbox">3-й квартал 2016 года</label></div>
-            <div><label style="display: none;" for="uk-2-2016"><input id="uk-2-2016" type="checkbox">2-й квартал 2016 года</label></div>
-            <div><label style="display: none;" for="uk-1-2016"><input id="uk-1-2016" type="checkbox">1-й квартал 2016 года</label></div>
-            <div><label style="display: none;" for="uk-4-2015"><input id="uk-4-2015" type="checkbox">4-й квартал 2015 года</label></div>
+            <div><label style="display: none;" for="qrt-3-2016"><input id="qrt-3-2016" type="checkbox">3-й квартал 2016 года</label></div>
+            <div><label style="display: none;" for="qrt-2-2016"><input id="qrt-2-2016" type="checkbox">2-й квартал 2016 года</label></div>
+            <div><label style="display: none;" for="qrt-1-2016"><input id="qrt-1-2016" type="checkbox">1-й квартал 2016 года</label></div>
+            <div><label style="display: none;" for="qrt-4-2015"><input id="qrt-4-2015" type="checkbox">4-й квартал 2015 года</label></div>
             <p style="display: none" id="uk-question-1"><strong>Как внесен УК?</strong><br>
                 <label for="money-1"><input id="money-1" type="radio" name="uk-4-2015">Деньгами</label><br>
                 <label for="things-1"><input id="things-1"type="radio" name="uk-4-2015">Имуществом</label><br>
             </p>        
-            <div><label style="display: none;" for="uk-3-2015"><input id="uk-3-2015" type="checkbox">3-й квартал 2015 года</label></div>
-            <div><label style="display: none;" for="uk-2-2015"><input id="uk-2-2015" type="checkbox">2-й квартал 2015 года</label></div>
-            <div><label style="display: none;" for="uk-1-2015"><input id="uk-1-2015" type="checkbox">1-й квартал 2015 года</label></div>
-            <div><label style="display: none;" for="uk-4-2014"><input id="uk-4-2014" type="checkbox">4-й квартал 2014 года</label></div>
+            <div><label style="display: none;" for="qrt-3-2015"><input id="qrt-3-2015" type="checkbox">3-й квартал 2015 года</label></div>
+            <div><label style="display: none;" for="qrt-2-2015"><input id="qrt-2-2015" type="checkbox">2-й квартал 2015 года</label></div>
+            <div><label style="display: none;" for="qrt-1-2015"><input id="qrt-1-2015" type="checkbox">1-й квартал 2015 года</label></div>
+            <div><label style="display: none;" for="qrt-4-2014"><input id="qrt-4-2014" type="checkbox">4-й квартал 2014 года</label></div>
             <p style="display: none" id="uk-question-2"><strong>Как внесен УК?</strong><br>
                 <label for="money-2"><input id="money-2" type="radio" name="uk-4-2014">Деньгами</label><br>
                 <label for="things-2"><input id="things-2" type="radio" name="uk-4-2014">Имуществом</label><br>
             </p>        
-            <div><label style="display: none;" for="uk-3-2014"><input id="uk-3-2014" type="checkbox">3-й квартал 2014 года</label></div>
-            <div><label style="display: none;" for="uk-2-2014"><input id="uk-2-2014" type="checkbox">2-й квартал 2014 года</label></div><br>
+            <div><label style="display: none;" for="qrt-3-2014"><input id="qrt-3-2014" type="checkbox">3-й квартал 2014 года</label></div>
+            <div><label style="display: none;" for="qrt-2-2014"><input id="qrt-2-2014" type="checkbox">2-й квартал 2014 года</label></div><br>
 
 
         </div>   
@@ -345,6 +351,8 @@ $(function () {
                 <input type="submit" value="Отправить">
         </form>
     </div>
+
+
 
 </form>
 
