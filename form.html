@@ -76,7 +76,7 @@ $(function () {
                 $(idOfReport)
                     .parent()
                     .parent()
-                    .append("<div class='periods-will-send'><label><input type='checkbox'" + " " + "id=cb-" + i + " " + "checked>" + periods.eq(i).text() + "</input></label></div>");
+                    .append("<div class='periods-will-send'><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
             }
         }
     }
@@ -236,11 +236,24 @@ $(function () {
         }
     });
 
-    $('#div-will-send').on("click", "#cb-0", function() {
-        alert('hello!ddd');
-    })
-
-        
+    $('#div-will-send').on("change", ".periods-will-send label input", function () {
+        var divs = $(this).parent().parent().siblings();
+        var childrElem = $(this).parent().parent().parent().children();
+        if ( $(this).prop('checked') ) {
+            divs.eq(0).children('input').prop('checked', true);
+        }         
+        for (var i = 1; i < childrElem.length; i++) {
+            if ( childrElem.eq(i).children('label').children('input').prop('checked') ) {
+                break;
+            }
+            if (i == (childrElem.length - 1)) {
+                if ( childrElem.eq(i).children('label').children('input').prop('checked') == false ) {
+                    divs.eq(0).children('input').prop('checked', false);
+                }
+            }
+        }
+    });
+       
                    
 });
 </script>
