@@ -117,8 +117,10 @@ $(function () {
     $("#qrt-4-2016, #qrt-4-2015, #qrt-4-2014").change(showAndHideUK);
     
     $("#btn-next-tax-system").click(function() {
-        $('#div-tranz').show();
-        $('#div-tax-system').hide();
+        if ( $('#general').prop('checked') ) {
+            $('#div-tranz').show();
+            $('#div-tax-system').hide();
+        }
     });
 
     $("#btn-back-tranz").click(function() {
@@ -141,7 +143,6 @@ $(function () {
     $("#btn-next-tranz").click(function() {
         $('#div-one-face').show();
         $('#div-tranz').hide();
-        
     });
     
     $("#btn-back-one-face").click(function() {
