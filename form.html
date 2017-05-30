@@ -71,15 +71,29 @@ $(function () {
     function showInputsWillSend (idOfReport) {
         var periods = $('#choice-period > div > label');
         var inputs = $('#choice-period > div > label > input');
+        var cntQrt = 0;
+        
         for (var i = 0; i < periods.length; i++) {                    
             if (inputs.eq(i).prop('checked')) {
-                $(idOfReport)
-                    .parent()
-                    .parent()
-                    .append("<div class='periods-will-send'><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
+                cntQrt = cntQrt + 1;
             }
-        }
-    }
+        }    
+        
+        if (cntQrt > 1) {
+            for (var i = 0; i < periods.length; i++) {                    
+                if (inputs.eq(i).prop('checked')) {
+                    $(idOfReport)
+                        .parent()
+                        .parent()
+                        .append("<div class='periods-will-send'><label><input type='checkbox' checked>" + periods.eq(i).text() + "</input></label></div>");
+                }
+            }
+        } else if (cntQrt === 1) { 
+            $("#span-we-will-send-2017").show();
+            $("#span-we-will-send").hide();
+        };
+    }   
+                
 
     function showAndHideChildChecks (reportId) {
         if ( $(reportId).prop('checked') == false ) {
@@ -151,6 +165,7 @@ $(function () {
     $("#btn-next-one-face").click(function() {
         $('#div-one-face').hide();
         $('#div-will-send').show();
+        $('#span-we-will-send').show();
         
         if ( $('#tranz-yes').prop('checked') && $('#one-face-yes').prop('checked') ) {            
             hideAllInputsWillSend();
@@ -204,7 +219,8 @@ $(function () {
     $("#btn-back-will-send").click(function() {      
         $('#div-will-send').hide();
         $(".periods-will-send").remove();
-        $('#div-one-face').show();        
+        $('#div-one-face').show();  
+        $('#span-we-will-send-2017').hide();        
     });
 
     $("#another-periods").click(function() {
@@ -246,7 +262,7 @@ $(function () {
             if ( childrElem.eq(i).children('label').children('input').prop('checked') ) {
                 break;
             }
-            if (i == (childrElem.length - 1)) {
+            if ( i == (childrElem.length - 1) ) {
                 if ( childrElem.eq(i).children('label').children('input').prop('checked') == false ) {
                     divs.eq(0).children('input').prop('checked', false);
                 }
@@ -267,10 +283,10 @@ $(function () {
 </head>
 <body>
 
-<label class="lbl" for="inp-1"><input id="inp-1" type="checkbox" data-item="1" data-list="11" checked>1-й квартал 2017 года</label><br>
+<!-- <label class="lbl" for="inp-1"><input id="inp-1" type="checkbox" data-item="1" data-list="11" checked>1-й квартал 2017 года</label><br>
 <label class="lbl" for="inp-1"><input id="inp-2" type="checkbox" data-item="2" data-list="12" checked>2-й квартал 2017 года</label><br>
 <label class="lbl" for="inp-1"><input id="inp-3" type="checkbox" data-item="3" data-list="13" checked>3-й квартал 2017 года</label><br>
-<button id="btn-test">Тест</button><br><br><br>
+<button id="btn-test">Тест</button><br><br><br> -->
 
 <form id="form-tax-system" action="">
     <div id="div-tax-system">
@@ -279,7 +295,7 @@ $(function () {
         <div id="choice-period" style="display: none" class="tax-answer-0"><i><span>Выберите период</span></i><br>
 
             <div><label for="qrt-2-2017"><input id="qrt-2-2017" type="checkbox" checked>2-й квартал 2017 года</label></div>            
-            <a id="another-periods" href="#">Другие периоды</a><br>
+            <a id="another-periods" href="#" onclick="return false;">Другие периоды</a><br>
             <div><label style="display: none;" for="qrt-1-2017"><input id="qrt-1-2017" type="checkbox">1-й квартал 2017 года</label></div>
             <div><label style="display: none;" for="qrt-4-2016"><input id="qrt-4-2016" type="checkbox">4-й квартал 2016 года</label></div>
             <p style="display: none" id="uk-question-0"><strong>Как внесен УК?</strong><br>
@@ -332,7 +348,8 @@ $(function () {
     </div>
 
     <div id="div-will-send" style="display: none">
-        <span>Мы за Вас подготовим:</span><br>
+        <span id="span-we-will-send">Мы за Вас подготовим:</span>
+        <span id="span-we-will-send-2017" style="display: none;">Мы за Вас подготовим за 2-й квартал 2017 года</span>
         <div style="display: none;">
             <label for='decl-nds'><input id='decl-nds' type='checkbox' name='decl-nds' checked><strong>Налоговая декларация по НДС</strong></label>
         </div>
